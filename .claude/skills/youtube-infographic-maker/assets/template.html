@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{TITLE}} — Infographic</title>
+<!--
+  YouTube Infographic Maker — print template.
+  HOW TO USE: copy this file, keep the style block, and replace the page body
+  with the components you need (each component is documented in a comment).
+  Delete any component the video doesn't justify. Change --accent / --accent-2
+  / --accent-soft to suit the topic (see SKILL.md palette list).
+-->
+<style>
+  :root{
+    --accent:#1f4fd1;        /* main colour: headers, numbers, rules */
+    --accent-2:#f59e0b;      /* highlight: tags, step arrows, stars */
+    --accent-soft:#eaf0ff;   /* tinted card backgrounds */
+    --ink:#14161a; --muted:#555b66; --line:#d9dde4; --paper:#ffffff;
+    --good:#13795b; --good-soft:#e7f6ef; --bad:#b42318; --bad-soft:#fdecea;
+  }
+  @page{ size: Letter; margin: 0.45in 0.5in 0.55in; }
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  html,body{ margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Inter","Helvetica Neue",Helvetica,Arial,"Liberation Sans",sans-serif;
+    font-size:10.5pt; line-height:1.42; }
+  body{ max-width:7.5in; margin:0 auto; }
+  @media screen{ body{ padding:24px 0 48px; } }
+  h1,h2,h3{ margin:0; line-height:1.15; }
+  p{ margin:0 0 4pt; }
+  ul,ol{ margin:0; padding-left:15pt; }
+  li{ margin:0 0 2.5pt; }
+  strong{ font-weight:700; }
+  .avoid{ break-inside:avoid; page-break-inside:avoid; }
+  .page-break{ break-before:page; page-break-before:always; }
+
+  /* ---------- HERO ---------- */
+  .hero{ background:var(--accent); color:#fff; border-radius:14px; padding:18pt 20pt 16pt; position:relative; overflow:hidden; }
+  .hero::after{ content:""; position:absolute; right:-40pt; top:-40pt; width:160pt; height:160pt; border-radius:50%; background:rgba(255,255,255,.09); }
+  .kicker{ font-size:8pt; letter-spacing:.14em; text-transform:uppercase; font-weight:700; opacity:.85; }
+  .hero h1{ font-size:24pt; font-weight:800; margin:5pt 0 6pt; letter-spacing:-.01em; max-width:90%; }
+  .hero .sub{ font-size:11pt; opacity:.92; max-width:92%; }
+  .meta{ display:flex; flex-wrap:wrap; gap:6pt; margin-top:10pt; }
+  .chip{ font-size:8pt; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.28); border-radius:999px; padding:2pt 8pt; }
+
+  /* ---------- BIG IDEA ---------- */
+  .bigidea{ margin:12pt 0 4pt; border-left:5pt solid var(--accent-2); background:#fff8eb; border-radius:0 10px 10px 0; padding:10pt 14pt; }
+  .bigidea .label{ font-size:8pt; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#9a5b00; }
+  .bigidea p{ font-size:13pt; font-weight:700; margin:3pt 0 0; line-height:1.3; }
+
+  /* ---------- SECTION HEADER ---------- */
+  .section{ margin-top:14pt; }
+  .sh{ display:flex; align-items:center; gap:8pt; margin-bottom:8pt; padding-bottom:4pt; border-bottom:2px solid var(--accent); break-after:avoid; page-break-after:avoid; }
+  .sh .n{ flex:0 0 auto; width:20pt; height:20pt; border-radius:6px; background:var(--accent); color:#fff; font-weight:800; font-size:10pt; display:flex; align-items:center; justify-content:center; }
+  .sh h2{ font-size:14pt; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:.03em; }
+  .sh .hint{ margin-left:auto; font-size:8pt; color:var(--muted); }
+
+  /* ---------- STATS ROW ---------- */
+  .stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(1.6in,1fr)); gap:8pt; }
+  .stat{ border:1px solid var(--line); border-radius:10px; padding:8pt 10pt; text-align:center; }
+  .stat .v{ font-size:22pt; font-weight:800; color:var(--accent); line-height:1; }
+  .stat .l{ font-size:8.5pt; color:var(--muted); margin-top:3pt; }
+
+  /* ---------- TAKEAWAY CARDS ---------- */
+  .grid{ display:grid; gap:8pt; }
+  .g2{ grid-template-columns:1fr 1fr; } .g3{ grid-template-columns:1fr 1fr 1fr; }
+  .card{ background:var(--accent-soft); border-radius:10px; padding:9pt 11pt; break-inside:avoid; page-break-inside:avoid; }
+  .card .num{ font-size:18pt; font-weight:800; color:var(--accent); line-height:1; }
+  .card h3{ font-size:11pt; font-weight:800; margin:3pt 0 3pt; }
+  .card p{ font-size:9.5pt; color:#2b2f36; margin:0; }
+  .card .ts{ display:inline-block; margin-top:4pt; font-size:7.5pt; color:var(--muted); }
+
+  /* ---------- LESSON BLOCKS (core teachings) ---------- */
+  .lesson{ display:grid; grid-template-columns:22pt 1fr; gap:8pt; padding:8pt 0; border-bottom:1px dashed var(--line); break-inside:avoid; page-break-inside:avoid; }
+  .lesson:last-child{ border-bottom:none; }
+  .lesson .dot{ width:22pt; height:22pt; border-radius:50%; border:2px solid var(--accent); color:var(--accent); font-weight:800; display:flex; align-items:center; justify-content:center; font-size:10pt; }
+  .lesson h3{ font-size:11.5pt; font-weight:800; margin-bottom:2pt; }
+  .lesson .why{ font-size:9pt; color:var(--muted); margin-top:2pt; }
+  .lesson .why b{ color:var(--accent); }
+
+  /* ---------- FRAMEWORK / PROCESS FLOW ---------- */
+  .flow{ display:flex; gap:0; align-items:stretch; break-inside:avoid; page-break-inside:avoid; }
+  .step{ flex:1; background:#fff; border:2px solid var(--accent); border-radius:10px; padding:8pt 8pt 9pt; text-align:center; position:relative; }
+  .step .k{ font-size:7.5pt; font-weight:800; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; }
+  .step h3{ font-size:10.5pt; margin:2pt 0 3pt; }
+  .step p{ font-size:8.5pt; color:var(--muted); margin:0; }
+  .arrow{ flex:0 0 14pt; display:flex; align-items:center; justify-content:center; color:var(--accent-2); font-size:14pt; font-weight:800; }
+  /* vertical variant for 6+ steps */
+  .vflow .step{ text-align:left; display:grid; grid-template-columns:auto 1fr; gap:2pt 10pt; margin-bottom:6pt; }
+  .vflow .step .k{ grid-row:span 2; align-self:center; font-size:14pt; }
+
+  /* ---------- COMPARE (do / don't, myth / truth, before / after) ---------- */
+  .compare{ display:grid; grid-template-columns:1fr 1fr; gap:8pt; break-inside:avoid; page-break-inside:avoid; }
+  .col{ border-radius:10px; padding:9pt 11pt; }
+  .col h3{ font-size:10.5pt; text-transform:uppercase; letter-spacing:.06em; margin-bottom:5pt; }
+  .col.good{ background:var(--good-soft); } .col.good h3{ color:var(--good); }
+  .col.bad{ background:var(--bad-soft); } .col.bad h3{ color:var(--bad); }
+  .col ul{ list-style:none; padding:0; }
+  .col li{ padding-left:14pt; position:relative; font-size:9.5pt; }
+  .col.good li::before{ content:"✓"; position:absolute; left:0; color:var(--good); font-weight:800; }
+  .col.bad li::before{ content:"✕"; position:absolute; left:0; color:var(--bad); font-weight:800; }
+
+  /* ---------- QUOTE ---------- */
+  .quote{ border-radius:10px; background:#f5f6f8; padding:10pt 14pt 10pt 30pt; position:relative; break-inside:avoid; page-break-inside:avoid; }
+  .quote::before{ content:"“"; position:absolute; left:8pt; top:-4pt; font-size:38pt; color:var(--accent); font-family:Georgia,serif; }
+  .quote p{ font-size:11.5pt; font-style:italic; margin:0; }
+  .quote .by{ font-size:8.5pt; color:var(--muted); margin-top:3pt; font-style:normal; }
+
+  /* ---------- TERMS / GLOSSARY ---------- */
+  .terms{ display:grid; grid-template-columns:1fr 1fr; gap:4pt 14pt; }
+  .term{ break-inside:avoid; font-size:9.5pt; } .term b{ color:var(--accent); }
+
+  /* ---------- ACTION PLAN ---------- */
+  .plan{ border:2px solid var(--accent); border-radius:12px; overflow:hidden; }
+  .phase{ padding:8pt 12pt 6pt; border-top:1px solid var(--line); break-inside:avoid; page-break-inside:avoid; }
+  .phase:first-child{ border-top:none; }
+  .phase .when{ display:inline-block; font-size:7.5pt; font-weight:800; letter-spacing:.1em; text-transform:uppercase; background:var(--accent-2); color:#fff; border-radius:4px; padding:1.5pt 6pt; margin-bottom:5pt; }
+  .todo{ list-style:none; padding:0; }
+  .todo li{ display:grid; grid-template-columns:13pt 1fr; gap:6pt; font-size:10pt; margin-bottom:4pt; }
+  .todo li::before{ content:""; width:10pt; height:10pt; border:1.5px solid var(--ink); border-radius:2px; margin-top:2pt; }
+  .todo .how{ display:block; font-size:8.5pt; color:var(--muted); }
+
+  /* ---------- WARNINGS / MISTAKES ---------- */
+  .warn{ background:var(--bad-soft); border-left:4pt solid var(--bad); border-radius:0 10px 10px 0; padding:8pt 12pt; break-inside:avoid; page-break-inside:avoid; }
+  .warn li{ font-size:9.5pt; }
+
+  /* ---------- RECAP ---------- */
+  .recap{ background:var(--ink); color:#fff; border-radius:12px; padding:12pt 16pt; break-inside:avoid; page-break-inside:avoid; }
+  .recap h2{ font-size:12pt; text-transform:uppercase; letter-spacing:.08em; color:var(--accent-2); margin-bottom:6pt; }
+  .recap ol li{ font-size:10pt; margin-bottom:3pt; }
+
+  /* ---------- SOURCE FOOTER ---------- */
+  .source{ margin-top:12pt; font-size:8pt; color:var(--muted); border-top:1px solid var(--line); padding-top:6pt; }
+  .source a{ color:var(--muted); }
+  .note{ font-size:8pt; color:var(--muted); font-style:italic; }
+</style>
+</head>
+<body>
+
+<!-- HERO: always first. kicker = "Video Infographic" (or "3-Video Infographic").
+     h1 = a sharp title for the LESSON (not just the video title). sub = one line on who
+     it's for / what you'll get. chips = channel, duration, date, # of videos. -->
+<header class="hero avoid">
+  <div class="kicker">Video Infographic</div>
+  <h1>{{LESSON TITLE}}</h1>
+  <div class="sub">{{One line: what this video teaches and who it's for}}</div>
+  <div class="meta">
+    <span class="chip">{{Channel}}</span><span class="chip">{{Duration}}</span><span class="chip">{{Published}}</span>
+  </div>
+</header>
+
+<!-- BIG IDEA: the single sentence someone should remember if they forget everything else. -->
+<div class="bigidea avoid">
+  <div class="label">The Big Idea</div>
+  <p>{{One-sentence thesis}}</p>
+</div>
+
+<!-- STATS (optional): only real numbers stated in the video. 2–4 tiles. -->
+<section class="section">
+  <div class="sh"><div class="n">#</div><h2>By the Numbers</h2></div>
+  <div class="stats">
+    <div class="stat"><div class="v">{{40%}}</div><div class="l">{{what the number means}}</div></div>
+  </div>
+</section>
+
+<!-- KEY TAKEAWAYS: 4–8 cards, g2 or g3. headline = the takeaway as a claim; p = 1–2 lines. -->
+<section class="section">
+  <div class="sh"><div class="n">1</div><h2>Key Takeaways</h2></div>
+  <div class="grid g2">
+    <div class="card"><div class="num">01</div><h3>{{Takeaway as a claim}}</h3><p>{{1–2 sentence explanation}}</p><span class="ts">▶ {{mm:ss}}</span></div>
+  </div>
+</section>
+
+<!-- CORE LESSONS: the deeper teachings, in the order the video builds them.
+     h3 = the lesson; p = the explanation/example from the video; .why = why it matters. -->
+<section class="section">
+  <div class="sh"><div class="n">2</div><h2>Core Lessons</h2></div>
+  <div class="lesson">
+    <div class="dot">A</div>
+    <div><h3>{{Lesson}}</h3><p>{{Explanation + the speaker's example}}</p><div class="why"><b>Why it matters:</b> {{consequence}}</div></div>
+  </div>
+</section>
+
+<!-- FRAMEWORK (optional): when the video teaches a model, method, sequence or formula.
+     Horizontal .flow for 2–5 steps; for 6+ use <div class="vflow"> with stacked .step. -->
+<section class="section">
+  <div class="sh"><div class="n">3</div><h2>{{Framework name}}</h2></div>
+  <div class="flow">
+    <div class="step"><div class="k">Step 1</div><h3>{{Name}}</h3><p>{{what happens}}</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="k">Step 2</div><h3>{{Name}}</h3><p>{{what happens}}</p></div>
+  </div>
+</section>
+
+<!-- COMPARE (optional): do vs don't, myth vs truth, old way vs new way. -->
+<section class="section">
+  <div class="sh"><div class="n">4</div><h2>Do This, Not That</h2></div>
+  <div class="compare">
+    <div class="col good"><h3>Do</h3><ul><li>{{...}}</li></ul></div>
+    <div class="col bad"><h3>Avoid</h3><ul><li>{{...}}</li></ul></div>
+  </div>
+</section>
+
+<!-- QUOTE (optional, max 2–3 in the whole document): short and genuinely memorable. -->
+<div class="section quote"><p>{{Short memorable quote}}</p><div class="by">— {{Speaker}}, {{mm:ss}}</div></div>
+
+<!-- ACTION PLAN: include whenever the content is applicable. Group by timeframe.
+     Each item starts with a verb, is specific, and has a .how line. -->
+<section class="section">
+  <div class="sh"><div class="n">5</div><h2>Action Plan</h2><span class="hint">Tick as you go</span></div>
+  <div class="plan">
+    <div class="phase"><span class="when">Today</span>
+      <ul class="todo"><li><div>{{Verb-first action}}<span class="how">{{how exactly / what "done" looks like}}</span></div></li></ul>
+    </div>
+    <div class="phase"><span class="when">This week</span><ul class="todo"><li><div>{{...}}</div></li></ul></div>
+    <div class="phase"><span class="when">Ongoing habit</span><ul class="todo"><li><div>{{...}}</div></li></ul></div>
+  </div>
+</section>
+
+<!-- RECAP: always last content block. 3–6 numbered lines that compress the whole video. -->
+<section class="section recap">
+  <h2>60-Second Recap</h2>
+  <ol><li>{{...}}</li></ol>
+</section>
+
+<!-- SOURCE: always. List every video with link. Note if transcript was auto-generated or secondary. -->
+<div class="source">Source: <a href="{{URL}}">{{Video title}}</a> — {{Channel}}. Infographic summarises the video's content; timestamps (▶) point to where each idea appears.</div>
+
+</body>
+</html>
